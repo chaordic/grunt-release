@@ -15,6 +15,7 @@ module.exports = function(grunt){
     var options = this.options({
       bump: true,
       file: grunt.config('pkgFile') || 'package.json',
+      changelog: false,
       add: true,
       commit: true,
       tag: true,
@@ -35,6 +36,7 @@ module.exports = function(grunt){
     };
 
     if (options.bump) bump(config);
+    if (options.changelog && typeof options.changelog === "string" ) changelog(config);
     if (options.add) add(config);
     if (options.commit) commit(config);
     if (options.tag) tag(config);
@@ -49,6 +51,10 @@ module.exports = function(grunt){
         newVersion = semver.inc(pkg.version, type || 'patch');
       }
       return {file: file, pkg: pkg, newVersion: newVersion};
+    }
+
+    function changelog(config){
+      grunt.task.run(options.changelog);
     }
 
     function add(config){

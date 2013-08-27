@@ -2,6 +2,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     bump: true,
     file: 'package.json',
+    changelog: false,
     add: true,
     commit: true,
     tag: true,
@@ -9,7 +10,7 @@ module.exports = function(grunt) {
     pushTags: true,
     npm: true,
     npmtag: false,
-    
+
     clean: {
       test: 'test/fixtures/_component.json'
     },
@@ -20,6 +21,7 @@ module.exports = function(grunt) {
       options: {
         bump: '<%= bump %>',
         file: '<%= file %>',
+        changelog: '<%= changelog %>',
         add: '<%= add %>',
         commit: '<%= commit %>',
         tag: '<%= tag %>',
