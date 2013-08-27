@@ -36,7 +36,7 @@ module.exports = function(grunt){
     };
 
     if (options.bump) bump(config);
-    if (options.changelog && typeof options.changelog === 'string' ) changelog(config);
+    if (options.changelog && typeof options.changelog === 'string' ) changelog();
     if (options.add) add(config);
     if (options.commit) commit(config);
     if (options.tag) tag(config);
@@ -53,7 +53,7 @@ module.exports = function(grunt){
       return {file: file, pkg: pkg, newVersion: newVersion};
     }
 
-    function changelog(config){
+    function changelog(){
       grunt.task.run(options.changelog);
     }
 
