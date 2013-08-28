@@ -25,16 +25,20 @@ module.exports = function(grunt){
       npm : true
     });
 
-    var tagName = grunt.config.getRaw('release.options.tagName') || '<%= version %>';
-    var commitMessage = grunt.config.getRaw('release.options.commitMessage') || 'release <%= version %>';
-    var tagMessage = grunt.config.getRaw('release.options.tagMessage') || 'version <%= version %>';
-
     var config = setup(options.file, type);
     var templateOptions = {
       data: {
         version: config.newVersion
       }
     };
+
+    var tagName = (function() {
+      var tagNameTemplate = grunt.config.getRaw('release.options.tagName') || '<%= version %>';
+      return grunt.template.process(tagNameTemplate, templateOptions);
+    }());
+    var commitMessage = grunt.config.getRaw('release.options.commitMessage') || 'release <%= version %>';
+    var tagMessage = grunt.config.getRaw('release.options.tagMessage') || 'version <%= version %>';
+
 
     if (options.bump) bump(config);
     if (options.changelog && typeof options.changelog === 'string') changelog();
@@ -69,9 +73,8 @@ module.exports = function(grunt){
     }
 
     function tag(config){
-      var name = grunt.template.process(tagName, templateOptions);
       var message = grunt.template.process(tagMessage, templateOptions);
-      run('git tag ' + name + ' -m "'+ message +'"', 'New git tag created: ' + name);
+      run('git tag ' + tagName + ' -m "'+ message +'"', 'New git tag created: ' + tagName);
     }
 
     function push(){
@@ -79,7 +82,7 @@ module.exports = function(grunt){
     }
 
     function pushTags(config){
-      run('git push --tags', 'pushed new tag '+ config.newVersion +' to remote');
+      run('git push --tags', 'pushed new tag '+ tagName +' to remote');
     }
 
     function publish(config){
@@ -116,7 +119,7 @@ module.exports = function(grunt){
     function bump(config){
       config.pkg.version = config.newVersion;
       grunt.file.write(config.file, JSON.stringify(config.pkg, null, '  ') + '\n');
-      grunt.log.ok('Version bumped to ' + config.newVersion);
+      grunt.log.ok('Version bumped to ' + tagName);
     }
 
   });
