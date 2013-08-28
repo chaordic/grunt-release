@@ -87,7 +87,7 @@ module.exports = function(grunt){
 
     function publish(config){
       var cmd = 'npm publish';
-      var msg = 'published '+ config.newVersion +' to npm';
+      var msg = 'published '+ tagName +' to npm';
       var npmtag = getNpmTag();
       if (npmtag){ 
         cmd += ' --tag ' + npmtag;
@@ -99,7 +99,7 @@ module.exports = function(grunt){
 
     function getNpmTag(){
       var tag = grunt.option('npmtag') || options.npmtag;
-      if(tag === true) { tag = config.newVersion }
+      if(tag === true) { tag = tagName; }
       return tag;
     }
 
