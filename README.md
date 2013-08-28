@@ -113,6 +113,7 @@ You can disable any of the steps if you want, by adding this to your Gruntfile:
     options: {
       bump: false, //default: true
       file: 'component.json', //default: package.json,
+      files: ['CHANGELOG.md'], //default: []
       changelog: 'changelog', //default: false (a string containing the changelog task to run)
       add: false, //default: true
       commit: false, //default: true

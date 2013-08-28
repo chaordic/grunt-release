@@ -15,6 +15,7 @@ module.exports = function(grunt){
     var options = this.options({
       bump: true,
       file: grunt.config('pkgFile') || 'package.json',
+      files: [],
       changelog: false,
       add: true,
       commit: true,
@@ -36,7 +37,7 @@ module.exports = function(grunt){
     };
 
     if (options.bump) bump(config);
-    if (options.changelog && typeof options.changelog === 'string' ) changelog();
+    if (options.changelog && typeof options.changelog === 'string') changelog();
     if (options.add) add(config);
     if (options.commit) commit(config);
     if (options.tag) tag(config);
@@ -54,16 +55,17 @@ module.exports = function(grunt){
     }
 
     function changelog(){
-      grunt.task.run(options.changelog);
+      run("grunt " + options.changelog);
     }
 
     function add(config){
-      run('git add ' + config.file);
+      run('git add ' + options.files.concat([config.file]).join(" "));
     }
 
     function commit(config){
       var message = grunt.template.process(commitMessage, templateOptions);
-      run('git commit '+ config.file +' -m "'+ message +'"', config.file + ' committed');
+      var files = options.files.concat([config.file]).join(" ");
+      run('git commit '+ files +' -m "'+ message +'"', files + ' committed');
     }
 
     function tag(config){

@@ -2,6 +2,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     bump: true,
     file: 'package.json',
+    files: [],
     changelog: false,
     add: true,
     commit: true,
@@ -21,6 +22,7 @@ module.exports = function(grunt) {
       options: {
         bump: '<%= bump %>',
         file: '<%= file %>',
+        files: '<%= files %>',
         changelog: '<%= changelog %>',
         add: '<%= add %>',
         commit: '<%= commit %>',
